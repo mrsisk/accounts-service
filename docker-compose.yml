@@ -1,0 +1,19 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak
+    container_name: key_cloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_FEATURES=token-exchange
+      - KC_FEATURES=admin-fine-grained-authz
+    command:
+      - start-dev --features=token-exchange,admin-fine-grained-authz
+    ports:
+      - 9001:8080
+  rabbitmq:
+    image: rabbitmq:3.11.13-management-alpine
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672

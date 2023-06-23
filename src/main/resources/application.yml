@@ -1,0 +1,33 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            authorization-grant-type: client_credentials
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+        provider:
+          keycloak:
+            token-uri: http://localhost:9000/realms/appoint/protocol/openid-connect/token
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000/realms/appoint
+  rabbitmq:
+    addresses: localhost:5672
+
+accounts-manager:
+  oauth:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+rabbitmq:
+  exchange:
+    registration: registration.exchange
+  queue:
+    notification: registration.queue
+  routing-keys:
+    registration-notification: registration-alert.routing-key
+auth-server:
+  token-uri: http://localhost:9000/realms/appoint/protocol/openid-connect/token
+  admin-uri: /admin/realms/appoint
+  base-uri: http://localhost:9000

@@ -1,8 +1,8 @@
 package mrsisk.github.io.accountsmanager.routes
 
-import mrsisk.github.io.accountsmanager.handlers.AccountsHandler
-import mrsisk.github.io.accountsmanager.handlers.AuthenticationHandler
-import mrsisk.github.io.accountsmanager.service.UserService
+import mrsisk.github.io.accountsmanager.handlers.AccountServiceHandler
+import mrsisk.github.io.accountsmanager.handlers.AuthenticationServiceHandler
+import mrsisk.github.io.accountsmanager.handlers.UserServiceHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.coRouter
@@ -11,18 +11,18 @@ import org.springframework.web.reactive.function.server.coRouter
 class RouterConfiguration {
 
     @Bean
-    fun adminRoutes(userService: UserService) = coRouter {
-        GET("/admin/users", userService::findAllUsers)
-        GET("/admin/users/{id}", userService::findUser)
+    fun adminRoutes(handler: UserServiceHandler) = coRouter {
+        GET("/admin/users", handler::findAllUsers)
+        GET("/admin/users/{id}", handler::getUserById)
     }
 
     @Bean
-    fun accountRoutes(handler: AccountsHandler) = coRouter {
+    fun accountRoutes(handler: AccountServiceHandler) = coRouter {
         POST("/user/register", handler::register)
     }
 
     @Bean
-    fun authRoutes(handler: AuthenticationHandler) = coRouter {
+    fun authRoutes(handler: AuthenticationServiceHandler) = coRouter {
         POST("/auth/login", handler::login)
         POST("/auth/refresh", handler::refresh)
     }

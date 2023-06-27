@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 
 @Component
-class AuthenticationHandler(private val authService: AuthService) {
+class AuthenticationServiceHandler(private val authService: AuthService) {
 
     suspend fun login(serverRequest: ServerRequest): ServerResponse{
         val body = serverRequest.bodyToMono<LoginRequest>().awaitFirst()
@@ -39,7 +39,7 @@ class AuthenticationHandler(private val authService: AuthService) {
                 val cookie = ResponseCookie.from("refresh_token", result.data.refreshToken)
                     .httpOnly(true)
                     .maxAge(30 * 60 * 1000)
-                    .build();
+                    .build()
                 ServerResponse
                     .status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .bodyValueAndAwait(mapOf("access_token" to result.data.accessToken))

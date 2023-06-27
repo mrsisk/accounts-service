@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class RabbitMQConfig {
 
-
     companion object {
         @JvmStatic
         lateinit var internalExchange: String

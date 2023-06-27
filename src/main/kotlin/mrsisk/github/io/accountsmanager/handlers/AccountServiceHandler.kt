@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.awaitEntity
 import org.springframework.web.reactive.function.server.*
 
 @Component
-class AccountsHandler(private val registrationService: RegistrationService) {
+class AccountServiceHandler(private val registrationService: RegistrationService) {
 
 
     suspend fun register(serverRequest: ServerRequest): ServerResponse {
@@ -18,6 +18,7 @@ class AccountsHandler(private val registrationService: RegistrationService) {
         return if (clientResponse.statusCode().is2xxSuccessful) ServerResponse.status(clientResponse.statusCode()).buildAndAwait()
         else ServerResponse.status(clientResponse.statusCode()).bodyValueAndAwait(mapOf("error" to message.body))
     }
+
 
 
 }

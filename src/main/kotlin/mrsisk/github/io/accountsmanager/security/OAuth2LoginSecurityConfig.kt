@@ -30,7 +30,9 @@ class OAuth2LoginSecurityConfig {
             .configurationSource(corsConfigurationSource)
             .and()
             .authorizeExchange { auth ->
-            auth.pathMatchers("/admin/**").hasAuthority("service-account").anyExchange()
+            auth.pathMatchers("/admin/**").hasAuthority("service-account")
+                .pathMatchers("/auth/userinfo").authenticated()
+                .anyExchange()
                 .permitAll()
         }.oauth2Client(Customizer.withDefaults())
 

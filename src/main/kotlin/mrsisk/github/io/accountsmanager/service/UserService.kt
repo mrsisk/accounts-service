@@ -1,11 +1,13 @@
 package mrsisk.github.io.accountsmanager.service
 
 import mrsisk.github.io.accountsmanager.models.User
+import mrsisk.github.io.accountsmanager.models.UserInfo
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.*
 import org.springframework.web.reactive.function.server.*
+import javax.naming.AuthenticationException
 
 
 @Service
@@ -55,5 +57,6 @@ class UserService(private val client: WebClient) {
 
         return users[0]
     }
+
 
 }

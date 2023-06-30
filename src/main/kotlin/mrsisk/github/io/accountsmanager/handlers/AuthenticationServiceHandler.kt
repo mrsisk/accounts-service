@@ -9,6 +9,7 @@ import mrsisk.github.io.accountsmanager.service.AuthService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseCookie
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
 
@@ -34,7 +35,10 @@ class AuthenticationServiceHandler(private val authService: AuthService) {
 
     suspend fun handleAuthResponse(result: Result<AuthenticationResponse, AuthError>): ServerResponse{
         return when(result){
-            is Result.Error -> ServerResponse.status(HttpStatus.UNAUTHORIZED).bodyValueAndAwait(result.error)
+            is Result.Error -> {
+                println("AUTH ERROR $result")
+                ServerResponse.status(HttpStatus.UNAUTHORIZED).bodyValueAndAwait(result.error)
+            }
             is Result.Success -> {
                 val cookie = ResponseCookie.from("refresh_token", result.data.refreshToken)
                     .httpOnly(true)
@@ -45,5 +49,12 @@ class AuthenticationServiceHandler(private val authService: AuthService) {
                     .bodyValueAndAwait(mapOf("access_token" to result.data.accessToken))
             }
         }
+    }
+
+    suspend fun userInfo(serverRequest: ServerRequest): ServerResponse{
+        println("HANDLING 1")
+        val s = serverRequest.principal().awaitFirst() as JwtAuthenticationToken
+        print("TOKEN IS $s")
+        return ServerResponse.ok().bodyValueAndAwait(s.tokenAttributes)
     }
 }

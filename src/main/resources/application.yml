@@ -31,3 +31,5 @@ auth-server:
   token-uri: http://localhost:9000/realms/appoint/protocol/openid-connect/token
   admin-uri: /admin/realms/appoint
   base-uri: http://localhost:9000
+server:
+  port: 8084

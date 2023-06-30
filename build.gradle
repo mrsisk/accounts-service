@@ -37,6 +37,20 @@ tasks.withType(KotlinCompile) {
 		jvmTarget = '17'
 	}
 }
+bootRun {
+	systemProperties(System.properties)
+	environment = [
+			"CLIENT_ID": "$CLIENT_ID",
+			"CLIENT_SECRET": "$CLIENT_SECRET"
+	]
+}
+
+test {
+	environment = [
+			"CLIENT_ID": "$CLIENT_ID",
+			"CLIENT_SECRET": "$CLIENT_SECRET"
+	]
+}
 
 tasks.named('test') {
 	useJUnitPlatform()

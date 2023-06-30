@@ -33,7 +33,7 @@ class AuthService(private val client: WebClient) {
         formData.add("grant_type", "password")
         formData.add("client_id", clientId)
         formData.add("client_secret", clientSecret)
-        formData.add("scope", "offline_access")
+        formData.add("scopes", "offline_access,openid")
 
         try {
             return request(formData)
@@ -74,6 +74,8 @@ class AuthService(private val client: WebClient) {
             throw ex
         }
     }
+
+
 
 
 }

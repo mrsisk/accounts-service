@@ -29,4 +29,6 @@ class UserServiceHandler(private val userService: UserService) {
       val users = userService.findAllUsers()
       return ServerResponse.ok().bodyValueAndAwait(users)
     }
+
+
 }

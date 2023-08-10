@@ -26,6 +26,7 @@ class RouterConfiguration {
         POST("/auth/login", handler::login)
         POST("/auth/refresh", handler::refresh)
         GET("/auth/userinfo", handler::userInfo)
+        POST("/auth/signout", handler::signOut)
     }
 
 

@@ -27,10 +27,10 @@ class OAuth2LoginSecurityConfig {
 
         http.csrf().disable()
             .cors()
-            .configurationSource(corsConfigurationSource)
+        //    .configurationSource(corsConfigurationSource)
             .and()
             .authorizeExchange { auth ->
-            auth.pathMatchers("/admin/**").hasAuthority("service-account")
+            auth.pathMatchers("/auth/admin/**").hasAnyAuthority("service-account", "ADMIN")
                 .pathMatchers("/auth/userinfo").authenticated()
                 .anyExchange()
                 .permitAll()
@@ -52,7 +52,7 @@ class OAuth2LoginSecurityConfig {
 
     private val corsConfigurationSource = CorsConfigurationSource { request ->
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:3000")
+        configuration.allowedOrigins = listOf("http://localhost:4200", "http://localhost:8081")
         configuration.allowedMethods = mutableListOf(
             "GET",
             "POST",
@@ -60,6 +60,7 @@ class OAuth2LoginSecurityConfig {
             "UPDATE"
         )
         configuration.addAllowedHeader(CorsConfiguration.ALL)
+
         configuration.allowCredentials = true
         configuration
     }

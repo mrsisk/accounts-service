@@ -22,7 +22,16 @@ class AuthenticationServiceHandler(private val authService: AuthService) {
         return handleAuthResponse(response)
     }
 
+    suspend fun signOut(serverRequest: ServerRequest): ServerResponse{
+        val cookie = ResponseCookie.from("refresh_token").build()
+        return ServerResponse
+            .status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .buildAndAwait()
+    }
+
     suspend fun refresh(serverRequest: ServerRequest): ServerResponse {
+
+        println("COOKIES ARE ${serverRequest.cookies()}")
         val list = serverRequest.cookies()["refresh_token"]
             ?: return ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait(mutableMapOf("message" to "no fresh  token found"))
 
@@ -41,7 +50,9 @@ class AuthenticationServiceHandler(private val authService: AuthService) {
             }
             is Result.Success -> {
                 val cookie = ResponseCookie.from("refresh_token", result.data.refreshToken)
-                    .httpOnly(true)
+                    .httpOnly(false)
+                 //   .path("/")
+                    .secure(false)
                     .maxAge(30 * 60 * 1000)
                     .build()
                 ServerResponse
